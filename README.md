@@ -4,7 +4,7 @@ an android application that draws a possible google map route between two points
 Result
 -----------
 <img src="/test.JPG" />          
-<img src="/Screenshot_2018-12-05-08-58-14-711.jpeg" height="534" width="300"/>
+
 
 
 ***
