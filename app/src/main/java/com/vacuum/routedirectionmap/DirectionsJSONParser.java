@@ -1,4 +1,7 @@
 package com.vacuum.routedirectionmap;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -22,10 +25,13 @@ public class DirectionsJSONParser {
         JSONArray jRoutes;
         JSONArray jLegs;
         JSONArray jSteps;
+        JSONArray jMode;
 
         try {
 
             jRoutes = jObject.getJSONArray("routes");
+            //jLegs = jObject.getJSONArray("legs");
+            //jMode = jObject.getJSONArray("travel_mode");
 
             /** Traversing all routes */
             for(int i=0;i<jRoutes.length();i++){
@@ -42,7 +48,12 @@ public class DirectionsJSONParser {
                         polyline = (String)((JSONObject)((JSONObject)jSteps.get(k)).get("polyline")).get("points");
                         List<LatLng> list = decodePoly(polyline);
 
-                        /** Traversing all points */
+                       /* for(int m=0;m <jSteps.length();m++){
+                          jMode = ((JSONObject)jSteps.get(m)).getJSONArray("travel_mode");
+                        }
+*/
+
+                       // /** Traversing all points */
                         for(int l=0;l<list.size();l++){
                             HashMap<String, String> hm = new HashMap<>();
                             hm.put("lat", Double.toString((list.get(l)).latitude) );
@@ -53,6 +64,7 @@ public class DirectionsJSONParser {
                     routes.add(path);
                 }
             }
+
 
         } catch (JSONException e) {
             e.printStackTrace();

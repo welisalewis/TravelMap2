@@ -313,7 +313,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //                .position(new LatLng(mLastLocation.getLatitude() , mLastLocation.getLongitude()))
 //                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
 //                .title("My Location"));
-        LatLng sydney = new LatLng(30, 31);
+        //LatLng sydney = new LatLng(30, 31);
 //
 //         m = mMap.addMarker(new MarkerOptions().draggable(true).title("I am here ").
 //                position(sydney).icon(BitmapDescriptorFactory.fromResource(R.mipmap.marker_)));
@@ -418,7 +418,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 m.remove();
 
             m = mMap.addMarker(new MarkerOptions().draggable(true).title("I am here ").
-                    position(previouslatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.walk)));
+                    position(previouslatLng).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
             if (origin.latitude != mLastLocation.getLatitude()  && origin.longitude != mLastLocation.getLongitude() ) {
 
             }
@@ -625,6 +625,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         // Sensor enabled
         String sensor = "sensor=false";
 
+       // String mode = "travel_mode";
+
         // Building the parameters to the web service
         String parameters = str_origin + "&" + str_dest + "&" + sensor;
 
@@ -633,7 +635,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters
-                + "&key=" + "AIzaSyB7r-0tHNUGgnWbljMlY5AvRej9E5R4ZIE";
+                + "&key=" + "AIzaSyB7r-0tHNUGgnWbljMlY5AvRej9E5R4ZIE" ;
 
 
         return url;

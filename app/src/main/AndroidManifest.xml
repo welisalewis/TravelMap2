@@ -30,6 +30,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="com.vacuum.routedirectionmap.JSONtransit"
+                     android:exported="true"></activity>
+        <activity android:name=".ParseActivity"
+            android:exported="true"></activity>
     </application>
 
 </manifest>
