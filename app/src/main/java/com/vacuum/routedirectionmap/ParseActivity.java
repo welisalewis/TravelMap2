@@ -1,7 +1,9 @@
 package com.vacuum.routedirectionmap;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,16 +25,24 @@ import org.json.JSONObject;
 
 public class ParseActivity extends AppCompatActivity {
     private TextView mTextViewResult;
+    private TextView mTextViewResult2;
     private RequestQueue mQueue;
     private LatLng origin = new LatLng(19.0803263, 72.84999239999999);
     private LatLng dest = new LatLng(19.0496701, 72.8306348);
+    /*private String origin="Vakola";
+    private String destination= "Hill" + "Road" + "Bandra";*/
+
+
+
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parse);
 
         mTextViewResult = findViewById(R.id.text_view_result);
+        //mTextViewResult2 = findViewById(R.id.text_view_result2);
         Button buttonParse = findViewById(R.id.button_info);
 
         mQueue = Volley.newRequestQueue(this);
@@ -40,74 +50,58 @@ public class ParseActivity extends AppCompatActivity {
         buttonParse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 jsonParse();
+                jsonParse();
             }
         });
     }
 
-    private void jsonParse(){
 
-       String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+    public void jsonParse() {
 
-        // Destination of route
-        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        Intent intent = getIntent();
+        //getIntent().getSerializableExtra("StringUrl");
+        String url = (String)intent.getSerializableExtra("StringUrl");            //RReal string from other activity
 
-
-        // Sensor enabled
-        String sensor = "sensor=false";
-
-        // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + sensor;
-
-        String mode = "mode_transit";
-
-        // Output format
-        String output = "json";
-
-        // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters +
-                 "&key=" + "AIzaSyB7r-0tHNUGgnWbljMlY5AvRej9E5R4ZIE" ;
-
-
-
-        //Parsing the json shizz
-
-
-
-
+        //String url = "https://maps.googleapis.com/maps/api/directions/json?origin=Vakola&destination=DBIT+Kurla&sensor=false&key=AIzaSyB7r-0tHNUGgnWbljMlY5A%20vRej9E5R4ZIE&mode=transit";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
-            //@Override
+                    //@Override
                     public void onResponse(JSONObject response) {
-                try {
-                    JSONArray jsonArray = response.getJSONArray("steps");
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("routes");
+                            //JSONArray jsonArray1 = response.getJSONArray("legs");
 
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject steps = jsonArray.getJSONObject(i);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject routes = jsonArray.getJSONObject(i);
 
-                        String distance = steps.getString("distance");
+                                String fare = routes.getString("fare");
+                               // JSONArray jsonArray1 = response.getJSONArray("legs");
 
-                        String duration = steps.getString("duration");
+                                /*for(int j =0; j<jsonArray1.length(); j++){
+                                    JSONObject legs = jsonArray1.getJSONObject(j);
 
-                        String instructions = steps.getString("html_instructions");
+                                    String steps = legs.getString("steps");
 
-                        mTextViewResult.append(distance + "," + duration + "," + instructions + "\n\n");
 
+                                    mTextViewResult2.append(steps + "");
+                                }
+*/
+                                String legs = routes.getString("legs");
+
+                                mTextViewResult.setMovementMethod(new ScrollingMovementMethod());
+                                mTextViewResult.append(  fare + "\n\n" + legs +"\n\n" );
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener(){
+                }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error){
+            public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
             }
         });
-
         mQueue.add(request);
-
     }
-
 }

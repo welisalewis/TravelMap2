@@ -67,6 +67,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -77,7 +78,7 @@ import java.util.List;
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         , GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener, Serializable {
 
     private GoogleMap mMap;
 
@@ -236,6 +237,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             //    addMarker(place.getLatLng());
             destLat = place.getLatLng().latitude;
             destLong = place.getLatLng().longitude;
+
+            /*Intent intent = new Intent(this,ParseActivity);
+            intent.putExtra("destination co-ordinates",place.getLatLng());*/
+
+
+
             mMap.clear();
             mMap.addMarker(new MarkerOptions().title("My Source").position(new LatLng(mLastLocation.getLatitude() , mLastLocation.getLongitude())));
             mMap.addMarker(new MarkerOptions().title("My destination").position(place.getLatLng()));
@@ -303,7 +310,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
+            //                                          int[] grantResultso)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             return;
@@ -598,6 +605,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         origin = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
         dest = new LatLng(destLat, destLong);
 
+
+
         // Getting URL to the Google Directions API
         String url = getUrl(origin, dest);
         Log.d("onMapClick", url.toString());
@@ -611,7 +620,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         startTrack = true;
     }
 
-    private String getUrl(LatLng origin, LatLng dest) {
+   public String getUrl(LatLng origin, LatLng dest) {
 
 
         //  String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters + "&key=" + MY_API_KEY
@@ -633,9 +642,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         // Output format
         String output = "json";
 
+       // String mode = "transit";
+
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters
-                + "&key=" + "AIzaSyB7r-0tHNUGgnWbljMlY5AvRej9E5R4ZIE" ;
+                + "&key=" + "AIzaSyB7r-0tHNUGgnWbljMlY5AvRej9E5R4ZIE" + "&mode=" + "transit";
+
+        Intent intent = new Intent(getApplicationContext(),ParseActivity.class);
+        intent.putExtra("StringUrl",url);
+        startActivity(intent);
 
 
         return url;
