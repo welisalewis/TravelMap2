@@ -7,6 +7,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -27,10 +30,7 @@ public class ParseActivity extends AppCompatActivity {
     private TextView mTextViewResult;
     private TextView mTextViewResult2;
     private RequestQueue mQueue;
-    private LatLng origin = new LatLng(19.0803263, 72.84999239999999);
-    private LatLng dest = new LatLng(19.0496701, 72.8306348);
-    /*private String origin="Vakola";
-    private String destination= "Hill" + "Road" + "Bandra";*/
+
 
 
 
@@ -87,9 +87,19 @@ public class ParseActivity extends AppCompatActivity {
                                 }
 */
                                 String legs = routes.getString("legs");
+                               /* JSONArray jsonArray1 = routes.getJSONArray("legs");
+
+                                    for(int j =0; j<jsonArray1.length(); j++){
+                                        JSONObject legs = jsonArray1.getJSONObject(j);
+
+                                        String steps = legs.getString("steps");
+
+                                        Toast.makeText(this,"Got",Toast.LENGTH_LONG).show();
+
+                                    }*/
 
                                 mTextViewResult.setMovementMethod(new ScrollingMovementMethod());
-                                mTextViewResult.append(  fare + "\n\n" + legs +"\n\n" );
+                                mTextViewResult.append(  fare + "\n\n" +legs + "\n \n\n \n" );
                             }
 
                         } catch (JSONException e) {
